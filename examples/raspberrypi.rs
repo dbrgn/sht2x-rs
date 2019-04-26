@@ -10,5 +10,7 @@ fn main() {
     let dev = I2cdev::new("/dev/i2c-1").unwrap();
     let mut sht21 = SHT2x::new(dev, Delay);
 
-    println!("Temperature raw: {:?}", sht21.temperature().unwrap());
+    let temp = sht21.temperature().unwrap();
+    println!("Temperature (milli-celsius): {:?}", temp.as_millicelsius());
+    println!("Temperature (celsius): {:?}", temp.as_celsius());
 }
