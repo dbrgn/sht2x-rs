@@ -3,6 +3,7 @@ name = "sht2x"
 version = "0.1.0"
 authors = ["Danilo Bargen <mail@dbrgn.ch>"]
 license = "MIT OR Apache-2.0"
+edition = "2018"
 
 [dependencies]
 embedded-hal = "0.1.0"
