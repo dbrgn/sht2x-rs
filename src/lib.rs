@@ -32,6 +32,12 @@ impl Temperature {
     pub fn as_celsius(&self) -> f32 { self.0 as f32 / 1000. }
 }
 
+impl Humidity {
+    pub fn as_percentmille(&self) -> i32 { self.0 }
+    pub fn as_percent(&self) -> f32 { self.0 as f32 / 1000. }
+}
+
+
 /// I²C commands
 #[allow(dead_code)]
 #[derive(Copy, Clone)]
@@ -102,6 +108,21 @@ where
         Ok(convert_temperature(temp_raw))
     }
 
+    /// Starts a relative humidity measurement and waits for it to finish before
+    /// returning the measured value.
+    pub fn rel_humidity(&mut self) -> Result<Humidity, Error<E>> {
+        self.command(Command::MeasureHumiNoHoldMaster)?;
+
+        // Wait for conversion to finish.
+        // Max time for conversion in 14 bit mode according to datasheet
+        // is 85ms. TODO: Do this depending on resolution, or poll.
+        self.delay.delay_ms(85); // FIXME check
+
+        let hum_raw = self.read_u16()?; // TODO CRC
+
+        Ok(convert_raw_rh(hum_raw))
+    }
+
     /// Send a command to the device.
     fn command(&mut self, command: Command) -> Result<(), Error<E>> {
         self.i2c
@@ -123,4 +144,12 @@ where
 /// Optimized for integer fixed point (3 digits) arithmetic.
 fn convert_temperature(temp_raw: u16) -> Temperature {
     Temperature(((((temp_raw as u32) * 21965) >> 13) - 46850) as i32)
+}
+
+/// Convert raw humidity measurement to thousands of a % of RH.
+///
+/// Formula (datasheet 6.1): -6 + 125 * (val / 2^16)
+/// The implementation is equivalent for fixed point (3 decimal places).
+fn convert_raw_rh(humidity_raw: u16) -> Humidity {
+    Humidity((((((humidity_raw & 0xfffc) as u32) * 15625) >> 13) - 6000) as i32)
 }

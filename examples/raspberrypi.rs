@@ -11,6 +11,9 @@ fn main() {
     let mut sht21 = SHT2x::new(dev, Delay);
 
     let temp = sht21.temperature().unwrap();
+    let rh = sht21.rel_humidity().unwrap();
     println!("Temperature (milli-celsius): {:?}", temp.as_millicelsius());
     println!("Temperature (celsius): {:?}", temp.as_celsius());
+    println!("Humidity (relative pcm): {:?}", rh.as_percentmille());
+    println!("Humidity (relative %): {:?}", rh.as_percent());
 }
