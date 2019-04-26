@@ -1,7 +1,7 @@
 extern crate linux_embedded_hal as hal;
 extern crate sht2x;
 
-use hal::{Delay, I2cdev};
+use crate::hal::{Delay, I2cdev};
 use sht2x::SHT2x;
 
 fn main() {
