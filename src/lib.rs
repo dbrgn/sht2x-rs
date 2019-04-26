@@ -142,8 +142,8 @@ where
 ///
 /// Formula (datasheet 6.2): -46.85 + 175.72 * (val / 2^16)
 /// Optimized for integer fixed point (3 digits) arithmetic.
-fn convert_temperature(temp_raw: u16) -> Temperature {
-    Temperature(((((temp_raw as u32) * 21965) >> 13) - 46850) as i32)
+fn convert_raw_temperature(temp_raw: u16) -> Temperature {
+    Temperature((((((temp_raw & 0xfffc) as u32) * 21965) >> 13) - 46850) as i32)
 }
 
 /// Convert raw humidity measurement to thousands of a % of RH.
