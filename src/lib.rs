@@ -8,8 +8,8 @@
 
 extern crate embedded_hal as hal;
 
-use hal::blocking::delay::DelayMs;
-use hal::blocking::i2c::{Read, Write, WriteRead};
+use crate::hal::blocking::delay::DelayMs;
+use crate::hal::blocking::i2c::{Read, Write, WriteRead};
 
 
 /// Errors
