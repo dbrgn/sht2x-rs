@@ -105,7 +105,7 @@ where
 
         let temp_raw = self.read_u16()?; // TODO CRC
 
-        Ok(convert_temperature(temp_raw))
+        Ok(convert_raw_temperature(temp_raw))
     }
 
     /// Starts a relative humidity measurement and waits for it to finish before
