@@ -27,20 +27,24 @@ pub struct Temperature(i32);
 pub struct Humidity(i32);
 
 impl Temperature {
+    /// Return the temperature as degrees millicelsius (1/10³ °C)
     pub fn as_millicelsius(&self) -> i32 {
         self.0
     }
 
+    /// Return the temperature as degrees celsius
     pub fn as_celsius(&self) -> f32 {
         self.0 as f32 / 1000.
     }
 }
 
 impl Humidity {
+    /// Return the relative humidity as per cent mille (pcm, 1/10⁵)
     pub fn as_percentmille(&self) -> i32 {
         self.0
     }
 
+    /// Return the relative humidity as percent
     pub fn as_percent(&self) -> f32 {
         self.0 as f32 / 1000.
     }
